@@ -17,19 +17,23 @@ Pessoa *registraPessoa();
 
 int main()
 {
-    int escolha = 1;
+    int escolha = -1;
     Pessoa *p;
 
-    while (escolha = 1)
+    while (escolha != 0)
     {
         printf("Escolha a opcao desejada:\n"
                "1 - Inserir nova pessoa\n"
-               "2- Imprimir lista de musicas em ordem de popularidade"
-               "3- \n");
+               "2 - Imprimir lista de musicas em ordem de popularidade\n"
+               "0 - Sair do programa\n");
         scanf("%d", &escolha);
 
         switch (escolha)
         {
+        case 0:
+            printf("\n\nPrograma encerrado!");
+            break;
+
         case 1:
             p = registraPessoa();
             break;
