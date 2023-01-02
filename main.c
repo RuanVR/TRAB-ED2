@@ -78,7 +78,7 @@ Pessoa *registraPessoa()
         }
     }
 
-    // Inserer musicas
+    // Insere musicas
     printf("Digite em ordem suas musicas preferidas: \n");
     while (i < 5)
     {
