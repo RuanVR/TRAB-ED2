@@ -13,7 +13,7 @@ typedef struct pessoa
     int musica[5];
 } Pessoa;
 
-
+Pessoa *registraPessoa();
 
 
 int main()
@@ -27,11 +27,12 @@ int main()
         "1 - Inserir nova pessoa\n"
         "2- Imprimir lista de musicas em ordem de popularidade"
         "3- \n");
-        scanf("%d", escolha);
+        scanf("%d", &escolha);
 
         switch (escolha)
         {
         case 1:
+            printf("teste");
             p = registraPessoa();
             break;
         
@@ -53,10 +54,10 @@ Pessoa *registraPessoa(){
     int i = 1;
 
     printf("Digite seu nome: ");
-    scanf(" %[^\n]", p->nome);
+    scanf(" %[^\n]\n", p->nome);
 
-    printf("Digite sua idade\n");
-    scanf("%d", &p->idade);
+    printf("Digite sua idade: ");
+    scanf("%d\n", &p->idade);
 
     //Confirma se o sexo é valido
     while (i == 1)
@@ -70,7 +71,7 @@ Pessoa *registraPessoa(){
         } 
         else
         {
-            printf("Sexo invalido, digite novamente\n");
+            printf("Sexo invalido, digite novamente\n\n");
         }     
     }
 
@@ -81,17 +82,19 @@ Pessoa *registraPessoa(){
         printf("%d: ", i+1);
         scanf("%d", &p->musica[i]);
 
-        //Verificando se a musica é valida
-        if(p->musica[i] < 0 || p->musica[i] > 30){
-            printf("Musica invalida, digite novamente\n");
+        //Verificando se a musica é valida entre as existentes
+        if(p->musica[i] < 1 || p->musica[i] > 30){
+            printf("Musica invalida, digite novamente\n\n");
         }
         else
         {
             i++;
         }  
+
+        //Verificando se a musica já está registrada na lista
     }
     
-    printf("Pessoa registrada");
+    printf("Pessoa registrada\n\n");
 
     return p;
 }
