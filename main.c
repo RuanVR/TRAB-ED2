@@ -10,7 +10,7 @@ typedef struct pessoa
     char nome[128]; 
     char sexo;
     int idade;
-    int musicas[5];
+    int musica[5];
 } Pessoa;
 
 
@@ -19,14 +19,26 @@ typedef struct pessoa
 int main()
 {  
     int escolha = 1;
-
+    Pessoa *p;
 
     while (escolha = 1)
     {
         printf("Escolha a opcao desejada:\n"
         "1 - Inserir nova pessoa\n"
         "2- Imprimir lista de musicas em ordem de popularidade"
-        "3- ");
+        "3- \n");
+        scanf("%d", escolha);
+
+        switch (escolha)
+        {
+        case 1:
+            p = registraPessoa();
+            break;
+        
+        default:
+            printf("Opcao invalida, escolha novamente:\n\n");
+            break;
+        }
     }
     
     return 0;
@@ -35,7 +47,7 @@ int main()
 //FUNÇÕES
 
 //Adicionando uma nova pessoa no banco de dados
-void registraPessoa(){
+Pessoa *registraPessoa(){
 
     Pessoa *p = (Pessoa*) malloc(sizeof(Pessoa));
     int i = 1;
@@ -44,13 +56,13 @@ void registraPessoa(){
     scanf(" %[^\n]", p->nome);
 
     printf("Digite sua idade\n");
-    scanf("%d", p->idade);
+    scanf("%d", &p->idade);
 
     //Confirma se o sexo é valido
     while (i == 1)
     {
         printf("Digite seu sexo: m - masculino | f - feminino\n");
-        scanf(" %[^\n]", p->sexo);
+        scanf(" %c", &p->sexo);
 
         if (p->sexo == 'm' || p->sexo == 'f')
         {
@@ -61,5 +73,25 @@ void registraPessoa(){
             printf("Sexo invalido, digite novamente\n");
         }     
     }
+
+    //Inserer musicas
+    printf("Digite em ordem suas musicas preferidas: \n");
+    while (i<5)
+    {
+        printf("%d: ", i+1);
+        scanf("%d", &p->musica[i]);
+
+        //Verificando se a musica é valida
+        if(p->musica[i] < 0 || p->musica[i] > 30){
+            printf("Musica invalida, digite novamente\n");
+        }
+        else
+        {
+            i++;
+        }  
+    }
     
+    printf("Pessoa registrada");
+
+    return p;
 }
