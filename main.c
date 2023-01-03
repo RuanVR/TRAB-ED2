@@ -13,13 +13,25 @@ typedef struct pessoa
     int musica[5];
 } Pessoa;
 
-Pessoa *registraPessoa();
+//Nó Lista
+typedef struct noLista {
+    struct Pessoa *pessoa;
+    struct noLista *prox;
+} NoLista;
 
+//Desclaração das funções
+Pessoa *registraPessoa();
+void iniciaLista(NoLista*l);
+void inserirElemento(NoLista *l, Pessoa *p);
+
+//Main
 int main()
 {
-    int escolha = -1;
+    NoLista *lista;
+    initLista(&lista);
     Pessoa *p;
 
+    int escolha = -1;
     while (escolha != 0)
     {
         printf("Escolha a opcao desejada:\n"
@@ -36,6 +48,8 @@ int main()
 
         case 1:
             p = registraPessoa();
+
+
             break;
 
         default:
@@ -116,4 +130,27 @@ Pessoa *registraPessoa()
     printf("Pessoa registrada\n\n");
 
     return p;
+}
+
+//Iniciador da lista
+void iniciaLista(NoLista *l){
+    l = NULL;
+}
+
+//Inserindo elementos na lista
+void inserirElemento(NoLista *l, Pessoa *p){
+
+    NoLista *novo = (NoLista*) malloc(sizeof(NoLista));
+    NoLista *aux = l;
+    novo->pessoa = p;
+
+    //Adicionado se a lista está vazia
+    if(l == NULL){
+        novo->prox = NULL;
+        l = novo;
+        return;
+    }
+
+    //Adicionando se a lista não estiver vazia
+    
 }
