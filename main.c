@@ -22,9 +22,9 @@ typedef struct noLista
 
 // Desclaração das funções
 Pessoa *registraPessoa();
-void iniciaLista(NoLista *l);
-void inserirElemento(NoLista *l, Pessoa *p);
-void imprimeLista(NoLista *l);
+void iniciaLista(NoLista **l);
+void inserirElemento(NoLista **l, Pessoa *p);
+void imprimeLista(NoLista **l);
 
 // Main
 int main()
@@ -135,49 +135,33 @@ Pessoa *registraPessoa()
 }
 
 // Iniciador da lista
-void iniciaLista(NoLista *l)
+void iniciaLista(NoLista **l)
 {
-    l = NULL;
+    *l = NULL;
 }
 
 // Inserindo elementos na lista
-void inserirElemento(NoLista *l, Pessoa *p)
+void inserirElemento(NoLista **l, Pessoa *p)
 {
 
-    NoLista *novo = (NoLista *)malloc(sizeof(NoLista));
-    NoLista *aux = l;
+    NoLista *novo = (NoLista*) malloc(sizeof(NoLista));
     novo->pessoa = p;
 
-    // Adicionado se a lista está vazia
-    if (l == NULL)
-    {
-        novo->prox = NULL;
-        l = novo;
-    }
-    
-    // Adicionando se a lista não estiver vazia
-    /*if (l != NULL)
-    {
-        for (aux; aux->prox != NULL; aux = aux->prox)
-        {
-            if (aux->prox == NULL)
-            {
-                novo->prox = NULL;
-                aux->prox = novo;
-            }
-        }
-    }*/
-    printf("\nAQUI\n");
+    //Inserindo elemento na pilha
+    novo->prox = *l;
+    *l = novo;
+
+    printf("Pessoa inserida\n\n");
 }
 
 // Imprimindo lista
-void imprimeLista(NoLista *l)
+void imprimeLista(NoLista **l)
 {
-    NoLista *a = l;
+    NoLista *a = *l;
 
     for (a; a != NULL; a = a->prox)
     {
         Pessoa *imp = a->pessoa;
-        printf("%s", imp->nome);
+        printf("%s\n", imp->nome);
     }
 }
