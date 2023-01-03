@@ -25,6 +25,7 @@ Pessoa *registraPessoa();
 void iniciaLista(NoLista **l);
 void inserirElemento(NoLista **l, Pessoa *p);
 void imprimeLista(NoLista **l);
+void salvarArquivo(NoLista**l);
 
 // Main
 int main()
@@ -35,7 +36,7 @@ int main()
     int escolha = -1;
     while (escolha != 0)
     {
-        printf("Escolha a opcao desejada:\n"
+        printf("\nEscolha a opcao desejada:\n"
                "1 - Inserir nova pessoa\n"
                "2 - Imprimir lista de musicas em ordem de popularidade\n"
                "0 - Sair do programa\n");
@@ -49,6 +50,7 @@ int main()
 
         case 1:
             inserirElemento(&lista, registraPessoa());
+            salvarArquivo(&lista);
             break;
 
         case 2:
@@ -64,7 +66,13 @@ int main()
     return 0;
 }
 
-// FUNÇÕES
+// FUNÇÕES DE CRIAÇÃO/ ARMAZENAMENTO NA LISTA/ SALVAMENTO NO ARQUIVO
+
+// Iniciador da lista
+void iniciaLista(NoLista **l)
+{
+    *l = NULL;
+}
 
 // Adicionando uma nova pessoa no banco de dados
 Pessoa *registraPessoa()
@@ -134,12 +142,6 @@ Pessoa *registraPessoa()
     return p;
 }
 
-// Iniciador da lista
-void iniciaLista(NoLista **l)
-{
-    *l = NULL;
-}
-
 // Inserindo elementos na lista
 void inserirElemento(NoLista **l, Pessoa *p)
 {
@@ -164,4 +166,17 @@ void imprimeLista(NoLista **l)
         Pessoa *imp = a->pessoa;
         printf("%s\n", imp->nome);
     }
+}
+
+//Salvando elementos no arquivo 
+void salvarArquivo(NoLista**l){
+    NoLista *temp = *l;
+    FILE *arquivo = fopen("arquivo.txt", "w");
+    Pessoa *p = temp->pessoa;
+
+    while (temp != NULL)
+    {
+        fprint(arquivo, "$s\t%s\t%d\t%d\n", p->nome, p->sexo, p->idade, p->musica);
+    }
+    
 }
