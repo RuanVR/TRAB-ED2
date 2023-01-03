@@ -13,23 +13,24 @@ typedef struct pessoa
     int musica[5];
 } Pessoa;
 
-//Nó Lista
-typedef struct noLista {
+// Nó Lista
+typedef struct noLista
+{
     struct Pessoa *pessoa;
     struct noLista *prox;
 } NoLista;
 
-//Desclaração das funções
+// Desclaração das funções
 Pessoa *registraPessoa();
-void iniciaLista(NoLista*l);
+void iniciaLista(NoLista *l);
 void inserirElemento(NoLista *l, Pessoa *p);
+void imprimeLista(NoLista *l);
 
-//Main
+// Main
 int main()
 {
     NoLista *lista;
-    initLista(&lista);
-    Pessoa *p;
+    iniciaLista(&lista);
 
     int escolha = -1;
     while (escolha != 0)
@@ -47,9 +48,11 @@ int main()
             break;
 
         case 1:
-            p = registraPessoa();
+            inserirElemento(&lista, registraPessoa());
+            break;
 
-
+        case 2:
+            imprimeLista(&lista);
             break;
 
         default:
@@ -118,12 +121,11 @@ Pessoa *registraPessoa()
                         sec = 1;
                     }
                 }
-                
-            }   
+            }
             if (sec == 0)
             {
-                i++; 
-            }   
+                i++;
+            }
         }
     }
 
@@ -132,25 +134,50 @@ Pessoa *registraPessoa()
     return p;
 }
 
-//Iniciador da lista
-void iniciaLista(NoLista *l){
+// Iniciador da lista
+void iniciaLista(NoLista *l)
+{
     l = NULL;
 }
 
-//Inserindo elementos na lista
-void inserirElemento(NoLista *l, Pessoa *p){
+// Inserindo elementos na lista
+void inserirElemento(NoLista *l, Pessoa *p)
+{
 
-    NoLista *novo = (NoLista*) malloc(sizeof(NoLista));
+    NoLista *novo = (NoLista *)malloc(sizeof(NoLista));
     NoLista *aux = l;
     novo->pessoa = p;
 
-    //Adicionado se a lista está vazia
-    if(l == NULL){
+    // Adicionado se a lista está vazia
+    if (l == NULL)
+    {
         novo->prox = NULL;
         l = novo;
-        return;
     }
-
-    //Adicionando se a lista não estiver vazia
     
+    // Adicionando se a lista não estiver vazia
+    /*if (l != NULL)
+    {
+        for (aux; aux->prox != NULL; aux = aux->prox)
+        {
+            if (aux->prox == NULL)
+            {
+                novo->prox = NULL;
+                aux->prox = novo;
+            }
+        }
+    }*/
+    printf("\nAQUI\n");
+}
+
+// Imprimindo lista
+void imprimeLista(NoLista *l)
+{
+    NoLista *a = l;
+
+    for (a; a != NULL; a = a->prox)
+    {
+        Pessoa *imp = a->pessoa;
+        printf("%s", imp->nome);
+    }
 }
