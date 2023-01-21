@@ -4,7 +4,9 @@
 
 #define N 30
 
-// Objeto pessoa
+//  STRUCTS
+
+// Estrutura da pessoa
 typedef struct pessoa
 {
     char nome[128];
@@ -13,25 +15,43 @@ typedef struct pessoa
     int musica[5];
 } Pessoa;
 
-// Nó Lista
+// No Lista
 typedef struct noLista
 {
     struct Pessoa *pessoa;
     struct noLista *prox;
 } NoLista;
 
-// Desclaração das funções
+// Lista dos votos das música
+typedef struct musica
+{
+    int musica;
+    int votos;
+} Musica;
+
+// Declaração das funções
 Pessoa *registraPessoa();
 void iniciaLista(NoLista **l);
 void inserirElemento(NoLista **l, Pessoa *p);
 void imprimeLista(NoLista **l);
 void salvarArquivo(NoLista**l);
+void iniciaMusica(Musica *m);
 
 // Main
 int main()
 {
-    NoLista *lista;
-    iniciaLista(&lista);
+    NoLista *listaTop, *listaM_Mais20, *listaM_Menos20, *listaF_Mais20, *listaF_Menos20;
+    iniciaLista(&listaTop);
+    iniciaLista(&listaM_Mais20);
+    iniciaLista(&listaM_Menos20);
+    iniciaLista(&listaF_Mais20);
+    iniciaLista(&listaF_Menos20);
+
+    Musica *musicaM_Mais20, *musicaM_Menos20, *musicaF_Mais20, *musicaF_Menos20;
+    iniciaMusica(&musicaM_Mais20);
+    iniciaMusica(&musicaM_Menos20);
+    iniciaMusica(&musicaF_Mais20);
+    iniciaMusica(&musicaF_Menos20);
 
     int escolha = -1;
     while (escolha != 0)
@@ -39,6 +59,10 @@ int main()
         printf("\nEscolha a opcao desejada:\n"
                "1 - Inserir nova pessoa\n"
                "2 - Imprimir lista de musicas em ordem de popularidade\n"
+               "3 - Imprimir as pessoas MENORES de 20 do sexo M que mencionaram em PRIMEIRO lugar uma das top 3 musicas de sua categoria\n"
+               "4 - Imprimir as pessoas MAIORES de 20 do sexo M que mencionaram em PRIMEIRO lugar uma das top 3 musicas de sua categoria\n"
+               "5 - Imprimir as pessoas MENORES de 20 do sexo F que mencionaram em PRIMEIRO lugar uma das top 3 musicas de sua categoria\n"
+               "6 - Imprimir as pessoas MAIORES de 20 do sexo F que mencionaram em PRIMEIRO lugar uma das top 3 musicas de sua categoria\n"
                "0 - Sair do programa\n");
         scanf("%d", &escolha);
 
@@ -177,6 +201,5 @@ void salvarArquivo(NoLista**l){
     while (temp != NULL)
     {
         fprint(arquivo, "$s\t%s\t%d\t%d\n", p->nome, p->sexo, p->idade, p->musica);
-    }
-    
+    }   
 }
