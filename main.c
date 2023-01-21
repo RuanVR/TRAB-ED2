@@ -19,7 +19,7 @@ typedef struct pessoa
 typedef struct noLista
 {
     struct Pessoa *pessoa;
-    struct noLista *prox;
+    struct NoLista *prox;
 } NoLista;
 
 // Lista dos votos das música
@@ -59,9 +59,9 @@ int main()
         printf("\nEscolha a opcao desejada:\n"
                "1 - Inserir nova pessoa\n"
                "2 - Imprimir lista de musicas em ordem de popularidade\n"
-               "3 - Imprimir as pessoas MENORES de 20 do sexo M que mencionaram em PRIMEIRO lugar uma das top 3 musicas de sua categoria\n"
+               "3 - Imprimir as pessoas MENORES ou IGUAL de 20 do sexo M que mencionaram em PRIMEIRO lugar uma das top 3 musicas de sua categoria\n"
                "4 - Imprimir as pessoas MAIORES de 20 do sexo M que mencionaram em PRIMEIRO lugar uma das top 3 musicas de sua categoria\n"
-               "5 - Imprimir as pessoas MENORES de 20 do sexo F que mencionaram em PRIMEIRO lugar uma das top 3 musicas de sua categoria\n"
+               "5 - Imprimir as pessoas MENORES ou IGUAL de 20 do sexo F que mencionaram em PRIMEIRO lugar uma das top 3 musicas de sua categoria\n"
                "6 - Imprimir as pessoas MAIORES de 20 do sexo F que mencionaram em PRIMEIRO lugar uma das top 3 musicas de sua categoria\n"
                "0 - Sair do programa\n");
         scanf("%d", &escolha);
@@ -73,12 +73,32 @@ int main()
             break;
 
         case 1:
-            inserirElemento(&lista, registraPessoa());
-            salvarArquivo(&lista);
+            Pessoa *registro = registraPessoa();
+
+            if (registro->idade <= 20 && registro->sexo == "m")
+            {
+                inserirElemento(&listaM_Menos20, registro);
+            }
+            
+            if (registro->idade > 20 && registro->sexo == "m")
+            {
+                inserirElemento(&listaM_Mais20, registro);
+            }
+
+            if (registro->idade <= 20 && registro->sexo == "f")
+            {
+                inserirElemento(&listaF_Menos20, registro);
+            }
+
+            if (registro->idade > 20 && registro->sexo == "f")
+            {
+                inserirElemento(&listaF_Mais20, registro);
+            }
+            
             break;
 
         case 2:
-            imprimeLista(&lista);
+             imprimeLista(&listaF_Mais20);
             break;
 
         default:
