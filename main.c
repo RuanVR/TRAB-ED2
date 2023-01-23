@@ -7,8 +7,7 @@
 //  STRUCTS
 
 // Estrutura da pessoa
-typedef struct pessoa
-{
+typedef struct pessoa{
     char nome[128];
     char sexo;
     int idade;
@@ -16,15 +15,13 @@ typedef struct pessoa
 } Pessoa;
 
 // No Lista
-typedef struct noLista
-{
-    struct Pessoa *pessoa;
+typedef struct noLista{
+    struct pessoa *pessoa;
     struct NoLista *prox;
 } NoLista;
 
 // Lista dos votos das música
-typedef struct musica
-{
+typedef struct musica{
     int musica;
     int votos;
 } Musica;
@@ -47,11 +44,11 @@ int main()
     iniciaLista(&listaF_Mais20);
     iniciaLista(&listaF_Menos20);
 
-    Musica *musicaM_Mais20, *musicaM_Menos20, *musicaF_Mais20, *musicaF_Menos20;
+    /*Musica *musicaM_Mais20, *musicaM_Menos20, *musicaF_Mais20, *musicaF_Menos20;
     iniciaMusica(&musicaM_Mais20);
     iniciaMusica(&musicaM_Menos20);
     iniciaMusica(&musicaF_Mais20);
-    iniciaMusica(&musicaF_Menos20);
+    iniciaMusica(&musicaF_Menos20);*/
 
     int escolha = -1;
     while (escolha != 0)
@@ -75,7 +72,7 @@ int main()
         case 1:
             Pessoa *registro = registraPessoa();
 
-            if (registro->idade <= 20 && registro->sexo == "m")
+            /*if (registro->idade <= 20 && registro->sexo == "m")
             {
                 inserirElemento(&listaM_Menos20, registro);
             }
@@ -88,7 +85,7 @@ int main()
             if (registro->idade <= 20 && registro->sexo == "f")
             {
                 inserirElemento(&listaF_Menos20, registro);
-            }
+            }*/
 
             if (registro->idade > 20 && registro->sexo == "f")
             {
@@ -122,7 +119,7 @@ void iniciaLista(NoLista **l)
 Pessoa *registraPessoa()
 {
 
-    Pessoa *p = (Pessoa *)malloc(sizeof(Pessoa));
+    Pessoa *p = (Pessoa*) malloc(sizeof(Pessoa));
     int i = 1;
 
     printf("\nDigite seu nome: ");
@@ -193,7 +190,7 @@ void inserirElemento(NoLista **l, Pessoa *p)
     NoLista *novo = (NoLista*) malloc(sizeof(NoLista));
     novo->pessoa = p;
 
-    //Inserindo elemento na pilha
+    //Inserindo elemento na lista
     novo->prox = *l;
     *l = novo;
 
@@ -213,7 +210,7 @@ void imprimeLista(NoLista **l)
 }
 
 //Salvando elementos no arquivo 
-void salvarArquivo(NoLista**l){
+/*void salvarArquivo(NoLista**l){
     NoLista *temp = *l;
     FILE *arquivo = fopen("arquivo.txt", "w");
     Pessoa *p = temp->pessoa;
@@ -222,4 +219,4 @@ void salvarArquivo(NoLista**l){
     {
         fprint(arquivo, "$s\t%s\t%d\t%d\n", p->nome, p->sexo, p->idade, p->musica);
     }   
-}
+}*/
