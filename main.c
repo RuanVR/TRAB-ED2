@@ -39,9 +39,7 @@ void imprimeMusica(Musica *m);
 void iniciaMusica(Musica *m);
 void ordenaMusicas(Musica *musicaTop, Musica *musicaM_Mais20, Musica *musicaM_Menos20, Musica *musicaF_Mais20, Musica *musicaF_Menos20);
 void ordenaLista(NoLista **completa, NoLista **l, Musica *m);
-void imprimeTop3(Musica *m);
 void inserirVoto(Musica *m, int id);
-
 void shellSort(Musica *m);
 
 // Main
@@ -76,17 +74,17 @@ int main()
         printf("\nEscolha a opcao desejada:\n"
                "1 - Inserir nova pessoa\n"
                "2 - Imprimir lista de musicas em ordem de popularidade\n"
-               "3 - Imprimir as pessoas MENORES ou IGUAL de 20 do sexo M que mencionaram em PRIMEIRO lugar uma das top 3 musicas de sua categoria\n"
-               "4 - Imprimir as pessoas MAIORES de 20 do sexo M que mencionaram em PRIMEIRO lugar uma das top 3 musicas de sua categoria\n"
-               "5 - Imprimir as pessoas MENORES ou IGUAL de 20 do sexo F que mencionaram em PRIMEIRO lugar uma das top 3 musicas de sua categoria\n"
-               "6 - Imprimir as pessoas MAIORES de 20 do sexo F que mencionaram em PRIMEIRO lugar uma das top 3 musicas de sua categoria\n"
+               "3 - Imprimir pessoas MENORES ou IGUAL de 20 do sexo M que mencionaram em PRIMEIRO lugar uma das top 3 musicas de sua categoria\n"
+               "4 - Imprimir pessoas MAIORES de 20 do sexo M que mencionaram em PRIMEIRO lugar uma das top 3 musicas de sua categoria\n"
+               "5 - Imprimir pessoas MENORES ou IGUAL de 20 do sexo F que mencionaram em PRIMEIRO lugar uma das top 3 musicas de sua categoria\n"
+               "6 - Imprimir pessoas MAIORES de 20 do sexo F que mencionaram em PRIMEIRO lugar uma das top 3 musicas de sua categoria\n"
                "0 - Sair do programa\n\n");
         scanf("%d", &escolha);
-
+        printf("\n");
         switch (escolha)
         {
         case 0:
-            printf("\n\nPrograma encerrado!");
+            printf("\nPrograma encerrado!");
             break;
 
         case 1:;
@@ -119,35 +117,39 @@ int main()
             break;
 
         case 2:;
-
+            printf("As musicas mais populares entre todas as pesquisas sao: \n\n");
             imprimeMusica(musicaTop);
             break;
 
         case 3:;
 
             ordenaLista(&M_Menos20, &listaM_Menos20, musicaM_Menos20);
-            imprimeTop3(musicaM_Menos20);
+            imprimeMusica(musicaM_Menos20);
+            printf("\nPessoas que selecionaram como 1 alguma musica do top 3 dessa categoria: \n\n");
             imprimeLista(&listaM_Menos20);
             break;
 
         case 4:;
 
             ordenaLista(&M_Mais20, &listaM_Mais20, musicaM_Mais20);
-            imprimeTop3(musicaM_Mais20);
+            imprimeMusica(musicaM_Mais20);
+            printf("\nPessoas que selecionaram como 1 alguma musica do top 3 dessa categoria: \n\n");
             imprimeLista(&listaM_Mais20);
             break;
 
         case 5:;
 
             ordenaLista(&F_Menos20, &listaF_Menos20, musicaF_Menos20);
-            imprimeTop3(musicaF_Menos20);
+            imprimeMusica(musicaF_Menos20);
+            printf("\nPessoas que selecionaram como 1 alguma musica do top 3 dessa categoria: \n\n");
             imprimeLista(&listaF_Menos20);
             break;
 
         case 6:;
 
-            ordenaLista(&F_Menos20, &listaF_Mais20, musicaF_Mais20);
-            imprimeTop3(musicaF_Mais20);
+            ordenaLista(&F_Mais20, &listaF_Mais20, musicaF_Mais20);
+            imprimeMusica(musicaF_Mais20);
+            printf("\nPessoas que selecionaram como 1 alguma musica do top 3 dessa categoria: \n\n");
             imprimeLista(&listaF_Mais20);
             break;
 
@@ -184,7 +186,7 @@ Pessoa *registraPessoa(Musica *musicaTop, Musica *musicaM_Mais20, Musica *musica
     Pessoa *p = (Pessoa *)malloc(sizeof(Pessoa));
     int i = 1;
 
-    printf("\nDigite seu nome: ");
+    printf("Digite seu nome: ");
     scanf(" %[^\n]", p->nome);
 
     printf("Digite sua idade: ");
@@ -265,8 +267,6 @@ Pessoa *registraPessoa(Musica *musicaTop, Musica *musicaM_Mais20, Musica *musica
         }
     }
 
-    //printf("Pessoa registrada\n\n");
-
     return p;
 }
 
@@ -280,8 +280,6 @@ void inserirElemento(NoLista **l, Pessoa p)
     // Inserindo elemento na lista
     novo->prox = (*l);
     (*l) = novo;
-
-    //printf("Pessoa inserida\n\n");
 }
 
 // INSERI VOTO NA MUSICA SELECIONADA
@@ -307,9 +305,10 @@ void imprimeLista(NoLista **l)
             printf("%s\n", a->pessoa.nome);
         }
     }
-    else{
-        printf("Lista Vazia");
-    }    
+    else
+    {
+        printf("Lista Vazia\n");
+    }
 }
 
 // IMPRIMINDO LISTA DE MUSICAS
@@ -323,7 +322,7 @@ void imprimeMusica(Musica *m)
     {
         if (auxiliar[i].votos > 0)
         {
-            printf("Musica: %d \n", auxiliar[i].musica);
+            printf("Musica: %d  ", auxiliar[i].musica);
             printf("Votos: %d \n\n", auxiliar[i].votos);
         }
     }
@@ -359,7 +358,8 @@ void shellSort(Musica *m)
     }
 }
 
-void ordenaMusicas(Musica *musicaTop, Musica *musicaM_Mais20, Musica *musicaM_Menos20, Musica *musicaF_Mais20, Musica *musicaF_Menos20){
+void ordenaMusicas(Musica *musicaTop, Musica *musicaM_Mais20, Musica *musicaM_Menos20, Musica *musicaF_Mais20, Musica *musicaF_Menos20)
+{
     shellSort(musicaTop);
     shellSort(musicaM_Mais20);
     shellSort(musicaM_Menos20);
@@ -367,12 +367,13 @@ void ordenaMusicas(Musica *musicaTop, Musica *musicaM_Mais20, Musica *musicaM_Me
     shellSort(musicaF_Menos20);
 }
 
-void ordenaLista(NoLista **completa, NoLista **l, Musica *m){
-    //Da um free na lista caso ela esteja com elementos
+void ordenaLista(NoLista **completa, NoLista **l, Musica *m)
+{
+    // Da um free na lista caso ela esteja com elementos
     if (*l != NULL)
     {
-        NoLista *temp, *p = l;
-        for ( p; p != NULL; p = temp)
+        NoLista *temp, *p = *l;
+        for (p; p != NULL; p = temp)
         {
             temp = p->prox;
             free(p);
@@ -380,23 +381,16 @@ void ordenaLista(NoLista **completa, NoLista **l, Musica *m){
         (*l) = NULL;
         free(temp);
     }
-    
+
     NoLista *temp = *completa;
 
-    for ( temp; temp != NULL; temp = temp->prox)
+    for (temp; temp != NULL; temp = temp->prox)
     {
         if (temp->pessoa.musica[0] == m[0].musica || temp->pessoa.musica[0] == m[1].musica || temp->pessoa.musica[0] == m[2].musica)
-        {   
+        {
             inserirElemento(l, temp->pessoa);
-        } 
-    }  
-}
-
-void imprimeTop3(Musica *m){
-    printf("As top 3 musicas mais populares dessa categoria são:\n");
-    printf("1- %d| ", m[1].musica);
-    printf("2- %d| ", m[2].musica);
-    printf("3- %d| ", m[3].musica);
+        }
+    }
 }
 
 // Salvando elementos no arquivo
