@@ -35,12 +35,15 @@ void iniciaLista(NoLista **l);
 void inserirElemento(NoLista **l, Pessoa p);
 void imprimeLista(NoLista **l);
 void imprimeMusica(Musica *m);
-// void salvarArquivo(NoLista **l);
 void iniciaMusica(Musica *m);
 void ordenaMusicas(Musica *musicaTop, Musica *musicaM_Mais20, Musica *musicaM_Menos20, Musica *musicaF_Mais20, Musica *musicaF_Menos20);
 void ordenaLista(NoLista **completa, NoLista **l, Musica *m);
 void inserirVoto(Musica *m, int id);
 void shellSort(Musica *m);
+void gravaPesquisa(NoLista **l);
+void gravaCategoria(FILE **arq, NoLista **l);
+void gravaMusica(FILE **arq, Musica *m);
+Pessoa *registraPessoaGravada(NoLista **l);
 
 // Main
 int main()
@@ -68,6 +71,18 @@ int main()
     iniciaMusica(musicaF_Mais20);
     iniciaMusica(musicaF_Menos20);
 
+    // CRIAÇÃO DE FILES PARA LEITURA
+
+    
+    registraPessoaGravada(&lista_completa);
+
+    // CRIAÇÃO DOS FILES PARA GRAVAÇÃO
+    FILE *M_Mais = fopen("arquivos/homem_mais.txt", "w");
+    FILE *M_Menos = fopen("arquivos/homem_menos.txt", "w");
+    FILE *F_Mais = fopen("arquivos/mulher_mais.txt", "w");
+    FILE *F_Menos = fopen("arquivos/mulher_menos.txt", "w");
+    FILE *Top = fopen("arquivos/top.txt", "w");
+
     int escolha = -1;
     while (escolha != 0)
     {
@@ -84,6 +99,19 @@ int main()
         switch (escolha)
         {
         case 0:
+
+            ordenaLista(&M_Menos20, &listaM_Menos20, musicaM_Menos20);
+            ordenaLista(&M_Mais20, &listaM_Mais20, musicaM_Mais20);
+            ordenaLista(&F_Menos20, &listaF_Menos20, musicaF_Menos20);
+            ordenaLista(&F_Mais20, &listaF_Mais20, musicaF_Mais20);
+
+            gravaPesquisa(&lista_completa);
+            gravaCategoria(M_Mais, &listaM_Mais20);
+            gravaCategoria(M_Menos, &listaM_Menos20);
+            gravaCategoria(F_Mais, &listaF_Mais20);
+            gravaCategoria(F_Menos, &listaF_Menos20);
+            gravaMusica(Top, musicaTop);
+
             printf("\nPrograma encerrado!");
             break;
 
@@ -393,14 +421,58 @@ void ordenaLista(NoLista **completa, NoLista **l, Musica *m)
     }
 }
 
-// Salvando elementos no arquivo
-/*void salvarArquivo(NoLista**l){
-    NoLista *temp = *l;
-    FILE *arquivo = fopen("arquivo.txt", "w");
-    Pessoa *p = temp->pessoa;
+// ARQUIVOS
 
-    while (temp != NULL)
+// Grava pesquisa completa
+void gravaPesquisa(NoLista **l)
+{
+
+    NoLista *temp = *l;
+
+    FILE *pesquisa_completa = fopen("arquivos/pesquisa_completa.txt", "w");
+    for (temp; temp != NULL; temp = temp->prox)
     {
-        fprint(arquivo, "$s\t%s\t%d\t%d\n", p->nome, p->sexo, p->idade, p->musica);
+        fprintf(pesquisa_completa, "%s\t%c\t%d\t%d %d %d %d %d\n", temp->pessoa.nome, temp->pessoa.sexo, temp->pessoa.idade, temp->pessoa.musica[0], temp->pessoa.musica[1], temp->pessoa.musica[2], temp->pessoa.musica[3], temp->pessoa.musica[4]);
     }
-}*/
+}
+
+// Grava cada categoria
+
+void gravaCategoria(FILE **arq, NoLista **l)
+{
+    NoLista *temp = *l;
+
+    for (temp; temp != NULL; temp = temp->prox)
+    {
+        fprintf(arq, "%s\n", temp->pessoa.nome);
+    }
+}
+
+// Grava top musica
+
+void gravaMusica(FILE **arq, Musica *m)
+{
+    for (int i = 0; i < N; i++)
+    {
+        if (m[i].votos > 0)
+        {
+            fprintf(arq, "%d\t%d\n", m[i].musica, m[i].votos);
+        }
+    }
+}
+
+// Le pessoa grava e adiciona
+Pessoa *registraPessoaGravada(NoLista **l)
+{
+
+    Pessoa *p = (Pessoa *)malloc(sizeof(Pessoa));
+    int i = 1;
+    FILE *pessoaGravada = fopen("arquivo/pesquisa_completa.txt", "r");
+
+    while (fscanf(pessoaGravada, "%[^\n]\t%c\t%d\t%d %d %d %d %d\n", p->nome, &p->sexo, &p->idade, &p->musica[0], &p->musica[1], &p->musica[2], &p->musica[3], &p->musica[4]) != EOF)
+    {
+       inserirElemento(&l, *p);
+    }
+
+    fclose(pessoaGravada);
+}
