@@ -43,7 +43,8 @@ void shellSort(Musica *m);
 void gravaPesquisa(NoLista **l);
 void gravaCategoria(FILE **arq, NoLista **l);
 void gravaMusica(FILE **arq, Musica *m);
-Pessoa *registraPessoaGravada(NoLista **l);
+void registraPessoaGravada(NoLista **l);
+void inserirPessoaGravada(NoLista **l, Pessoa p);
 
 // Main
 int main()
@@ -73,7 +74,6 @@ int main()
 
     // CRIAÇÃO DE FILES PARA LEITURA
 
-    
     registraPessoaGravada(&lista_completa);
 
     // CRIAÇÃO DOS FILES PARA GRAVAÇÃO
@@ -111,6 +111,12 @@ int main()
             gravaCategoria(F_Mais, &listaF_Mais20);
             gravaCategoria(F_Menos, &listaF_Menos20);
             gravaMusica(Top, musicaTop);
+
+            fclose(M_Mais);
+            fclose(M_Menos);
+            fclose(F_Mais);
+            fclose(F_Menos);
+            fclose(Top);
 
             printf("\nPrograma encerrado!");
             break;
@@ -434,6 +440,7 @@ void gravaPesquisa(NoLista **l)
     {
         fprintf(pesquisa_completa, "%s\t%c\t%d\t%d %d %d %d %d\n", temp->pessoa.nome, temp->pessoa.sexo, temp->pessoa.idade, temp->pessoa.musica[0], temp->pessoa.musica[1], temp->pessoa.musica[2], temp->pessoa.musica[3], temp->pessoa.musica[4]);
     }
+    fclose(pesquisa_completa);
 }
 
 // Grava cada categoria
@@ -462,17 +469,38 @@ void gravaMusica(FILE **arq, Musica *m)
 }
 
 // Le pessoa grava e adiciona
-Pessoa *registraPessoaGravada(NoLista **l)
+void registraPessoaGravada(NoLista **l)
 {
 
     Pessoa *p = (Pessoa *)malloc(sizeof(Pessoa));
-    int i = 1;
-    FILE *pessoaGravada = fopen("arquivo/pesquisa_completa.txt", "r");
 
-    while (fscanf(pessoaGravada, "%[^\n]\t%c\t%d\t%d %d %d %d %d\n", p->nome, &p->sexo, &p->idade, &p->musica[0], &p->musica[1], &p->musica[2], &p->musica[3], &p->musica[4]) != EOF)
+    FILE *pessoaGravada = fopen("arquivo/pesquisa_completa.txt", "r");
+    while (fscanf(pessoaGravada, "%[^\t]\t%c\t%d\t%d %d %d %d %d\n", p->nome, &p->sexo, &p->idade, &p->musica[0], &p->musica[1], &p->musica[2], &p->musica[3], &p->musica[4]) != EOF)
     {
-       inserirElemento(&l, *p);
+        inserirPessoaGravada(l, *p);
     }
 
     fclose(pessoaGravada);
 }
+
+void inserirPessoaGravada(NoLista **l, Pessoa p)
+{
+    NoLista *novo = malloc(sizeof(NoLista));
+    novo->pessoa = p;
+    // Inserindo elemento na lista
+    novo->prox = (*l);
+    (*l) = novo;
+}
+
+// void registratop(Musica *m)
+// {
+
+//     FILE *musicas = fopen("arquivos/top.txt", "r");
+//     Musica *nova = malloc(sizeof(Musica));
+//     while (fscanf(musicas, "%d\t%d\n", &nova->musica, &nova->votos) != EOF)
+//     {
+//         inserirVoto(m, nova->musica);
+//     }
+
+//     fclose(musicas);
+// }
